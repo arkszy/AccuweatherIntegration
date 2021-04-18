@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,22 +39,11 @@ public class AccuweatherController {
     }
 
 
-    @Autowired
-    private Environment environment;
-
-    public void getActiveProfiles() {
-        for (String profileName : environment.getActiveProfiles()) {
-            System.out.println("Currently active profile - " + profileName);
-        }
-    }
-
-
     @GetMapping(value = "/5day/forecast/{postCode}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResultDTO getFiveDayForecastByPostCode(@PathVariable String postCode) {
         ResultDTO resultDTO;
         try {
-            getActiveProfiles();
             String locationKey = locationService.getLocationKeyByPostCode(postCode);
             if (locationKey != null) {
                 return new ResultDTO(true, forecastService.getFiveDayForecastByLocationKey(locationKey));
