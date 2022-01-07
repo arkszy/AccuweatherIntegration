@@ -2,7 +2,10 @@ package com.example.accuweather.service;
 
 import com.example.accuweather.exception.IntegrationException;
 import com.example.accuweather.exception.InternalException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,34 +17,22 @@ import java.net.http.HttpResponse;
 import java.util.zip.GZIPInputStream;
 
 @Service
+@RequiredArgsConstructor
 public class AccuweatherServiceImpl implements AccuweatherService {
 
+    private final RestTemplate restTemplate;
+
     @Override
-    public byte[] getDecodedByteResponseFromGivenUrl(String apiName, String destinationUrl) throws InternalException, IntegrationException {
+    public byte[] getDecodedByteResponseFromGivenUrl(String apiName, String destinationUrl) throws IntegrationException {
         URI url = URI.create(destinationUrl);
-        HttpRequest getRequest = HttpRequest.newBuilder(url).GET().headers("Accept-Encoding", "gzip").build();
-        HttpClient client = HttpClient.newBuilder().build();
-        HttpResponse<byte[]> response;
-        try {
-            response = client.send(getRequest, HttpResponse.BodyHandlers.ofByteArray());
-        } catch (IOException | InterruptedException e) {
-            throw new InternalException(apiName, e);
-        }
-        if (response.statusCode() == 200) {
-            try (GZIPInputStream gzis = new GZIPInputStream(new ByteArrayInputStream(response.body()))) {
-                byte[] buffer = new byte[1024];
-                try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-                    int len;
-                    while ((len = gzis.read(buffer)) > 0) {
-                        out.write(buffer, 0, len);
-                    }
-                    return out.toByteArray();
-                }
-            } catch (IOException e) {
-                throw new InternalException(apiName, e);
-            }
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept-Encoding", "gzip");
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<byte[]> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, byte[].class);
+        if (response.getStatusCodeValue() == HttpStatus.OK.value()) {
+            return response.getBody();
         } else {
-            throw new IntegrationException(response.statusCode(), apiName);
+            throw new IntegrationException(response.getStatusCodeValue(), apiName);
         }
     }
 }
