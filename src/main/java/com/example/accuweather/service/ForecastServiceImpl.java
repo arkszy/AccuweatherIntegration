@@ -15,8 +15,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ForecastServiceImpl implements ForecastService {
 
-    private static final String LOCATION_API_NAME = "Forecast API -> forecasts/v1/daily/5day";
-    @Value("${accuweather.service.locations.url}")
+    private static final String API_NAME = "Forecast API -> forecasts/v1/daily/5day";
+    @Value("${accuweather.service.forecasts.daily.5day.url}")
     private String serviceUrl;
     private final ObjectMapper mapper;
     private final AccuweatherApiStatistics apiStatistics;
@@ -24,12 +24,12 @@ public class ForecastServiceImpl implements ForecastService {
 
     @Override
     public ForecastDTO getFiveDayForecastByLocationKey(String locationKey) throws IntegrationException, InternalException {
-        byte[] responseBytes = accuweatherService.getDecodedByteResponseFromGivenUrl(LOCATION_API_NAME, serviceUrl.concat("/").concat(locationKey).concat("?apikey=").concat(Config.API_KEY).concat("&language=pl-PL&metric=true"));
+        byte[] responseBytes = accuweatherService.getDecodedByteResponseFromGivenUrl(API_NAME, serviceUrl.concat("/").concat(locationKey).concat("?apikey=").concat(Config.API_KEY).concat("&language=pl-PL&metric=true"));
         apiStatistics.incrementAccuweatherApiCallsCount();
         try {
             return mapper.readValue(responseBytes, ForecastDTO.class);
         } catch (IOException e) {
-            throw new InternalException(LOCATION_API_NAME, e);
+            throw new InternalException(API_NAME, e);
         }
     }
 }

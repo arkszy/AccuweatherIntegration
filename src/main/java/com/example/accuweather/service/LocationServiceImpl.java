@@ -18,7 +18,7 @@ import java.util.Map;
 public class LocationServiceImpl implements LocationService {
 
     private static final Map<String, String> locationKeyByPostCode = new HashMap<>();
-    private static final String LOCATION_API_NAME = "Locations API -> locations/v1/search";
+    private static final String API_NAME = "Locations API -> locations/v1/search";
     @Value("${accuweather.service.locations.url}")
     private String serviceUrl;
     private final ObjectMapper mapper;
@@ -29,7 +29,7 @@ public class LocationServiceImpl implements LocationService {
     public String getLocationKeyByPostCode(String postCode) throws IntegrationException, InternalException {
         String locationKey = locationKeyByPostCode.get(postCode);
         if (locationKey == null) {
-            byte[] bytes = accuweatherService.getDecodedByteResponseFromGivenUrl(LOCATION_API_NAME, serviceUrl.concat("?apikey=".concat(Config.API_KEY).concat("&q=PrimaryPostalCode%3A%20").concat(postCode).concat("&offset=1")));
+            byte[] bytes = accuweatherService.getDecodedByteResponseFromGivenUrl(API_NAME, serviceUrl.concat("?apikey=".concat(Config.API_KEY).concat("&q=PrimaryPostalCode%3A%20").concat(postCode).concat("&offset=1")));
             apiStatistics.incrementAccuweatherApiCallsCount();
             try {
                 LocationDTO[] locationArray = mapper.readValue(bytes, LocationDTO[].class);
@@ -42,7 +42,7 @@ public class LocationServiceImpl implements LocationService {
                 }
                 return null;
             } catch (IOException e) {
-                throw new InternalException(LOCATION_API_NAME, e);
+                throw new InternalException(API_NAME, e);
             }
         } else {
             return locationKey;
