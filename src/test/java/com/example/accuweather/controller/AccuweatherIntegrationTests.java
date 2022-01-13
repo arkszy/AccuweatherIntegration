@@ -1,5 +1,6 @@
 package com.example.accuweather.controller;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ class AccuweatherIntegrationTests {
     private AccuweatherApiStatistics apiStatistics;
 
     @Test
+    @Disabled
     void checkIfEndpointIsAvailable() throws Exception {
 
         assertEquals(apiStatistics.getAccuweatherApiCallsCount(), 0L);
