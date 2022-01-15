@@ -9,11 +9,6 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class RestTemplateConfig {
 
-//    @Bean
-//    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-//        return builder.setConnectTimeout(Duration.ofMinutes(5)).build();
-//    }
-
     @Bean
     public RestTemplate restTemplate() {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(
