@@ -1,0 +1,2 @@
+#!/bin/bash
+mvn clean package -P prod && docker-compose -f docker-compose-prod.yml build && docker-compose -f docker-compose-prod.yml up -d

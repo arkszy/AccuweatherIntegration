@@ -17,20 +17,12 @@ Second one return json with counter of accuweatherApiCalls.
 
 ## Usage
 
-To run this project you need to have maven 3 and java 17.
+To run this project you need to have maven 3, java 17 and docker.
 
-Example commands to run this app:
-
-```bash
-mvn spring-boot:run -Dspring-boot.run.profiles=prod
-```
-
-or
-
-```bash
-mvn clean install -P prod
-java -jar target\accuweather-0.0.1-SNAPSHOT.jar
-```
+App has two profiles: dev and prod. First one is default. Dev is for development purposes and communicates with local
+mock-server. Prod is for production and communicates with real accuweather API.\
+To run app in dev mode execute bootstrap-dev.sh\
+To run app in prod mode execute bootstrap-prod.sh
 
 ## Tech stack:
 
@@ -38,7 +30,8 @@ Spring boot 2.6.2\
 Spring boot actuator\
 Spring RestTemplate with Apache client\
 Lombok\
-JUnit
+JUnit\
+Docker
 
 ## License
 

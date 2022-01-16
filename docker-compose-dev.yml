@@ -1,0 +1,23 @@
+version: "3.2"
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8090:8080
+      - 15005:5005
+    depends_on:
+      - server-mock
+    hostname: server
+  server-mock:
+    build:
+      context: ./server-mock
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8091:8080
+      - 15006:5005
+    hostname: server-mock
+
