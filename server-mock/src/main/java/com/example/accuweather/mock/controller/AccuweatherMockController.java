@@ -26,7 +26,7 @@ public class AccuweatherMockController {
         if (StringUtils.isNotBlank(query)) {
             try {
                 String postalCode = URLDecoder.decode(query, StandardCharsets.UTF_8).substring(query.indexOf(PRIMARY_POSTAL_CODE_QUERY_PARAM) + PRIMARY_POSTAL_CODE_QUERY_PARAM.length()).trim();
-                return ResponseEntity.ok(JsonResourceLoader.loadGivenJsonOrReturnEmptyJson(String.format(JSON_LOCATION_STRING_EXPRESSION, postalCode)));
+                return ResponseEntity.ok(JsonResourceLoader.loadGivenJsonOrReturnEmptyArrayJson(String.format(JSON_LOCATION_STRING_EXPRESSION, postalCode)));
             } catch (Exception e) {
                 log.error("UnexpectedError", e);
                 return ResponseEntity.internalServerError().body("[]");
@@ -38,7 +38,7 @@ public class AccuweatherMockController {
     @GetMapping(value = "/forecasts/v1/daily/5day/{locationId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> get5dayForecast(@PathVariable String locationId) {
         try {
-            return ResponseEntity.ok(JsonResourceLoader.loadGivenJsonOrReturnEmptyJson(String.format(JSON_FORECAST_STRING_EXPRESSION, locationId)));
+            return ResponseEntity.ok(JsonResourceLoader.loadGivenJsonOrReturnEmptyArrayJson(String.format(JSON_FORECAST_STRING_EXPRESSION, locationId)));
         } catch (Exception e) {
             log.error("UnexpectedError", e);
             return ResponseEntity.internalServerError().body("[]");
