@@ -5,8 +5,8 @@ has transient memory counter of performed AccuWeather API calls.
 
 It provides two get mappings:
 
-1) localhost:8080/5day/forecast/{postalCode}
-2) localhost:8080/api/statistics
+1) localhost:8090/5day/forecast/{postalCode}
+2) localhost:8090/api/statistics
 
 First one returns if succeed json array of daily forecasts for the next 5 days. Forecast is prepared for an area of
 given postalCode. Returning this array requires making two requests to Accuweather API. One for getting identifier of
@@ -30,8 +30,9 @@ Spring boot 2.6.2\
 Spring boot actuator\
 Spring RestTemplate with Apache client\
 Lombok\
-JUnit\
-Docker
+JUnit 5\
+Docker \
+Redis
 
 ## License
 

@@ -1,0 +1,13 @@
+version: "3.2"
+services:
+  redis-server:
+    image: redis
+    command:
+      - redis-server
+      - /usr/local/etc/redis
+    volumes:
+      - ./redis-server/conf:/usr/local/etc/redis
+    ports:
+      - "6379:6379"
+    hostname: redis
+

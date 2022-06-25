@@ -1,6 +1,6 @@
 package com.example.accuweather.service;
 
-import com.example.accuweather.config.Config;
+import com.example.accuweather.config.AppConfig;
 import com.example.accuweather.dto.forecast.ForecastDTO;
 import com.example.accuweather.exception.IntegrationException;
 import com.example.accuweather.exception.InternalException;
@@ -24,7 +24,7 @@ public class ForecastServiceImpl implements ForecastService {
 
     @Override
     public ForecastDTO getFiveDayForecastByLocationKey(String locationKey) throws IntegrationException, InternalException {
-        byte[] responseBytes = accuweatherService.getDecodedByteResponseFromGivenUrl(API_NAME, serviceUrl.concat("/").concat(locationKey).concat("?apikey=").concat(Config.API_KEY).concat("&language=pl-PL&metric=true"));
+        byte[] responseBytes = accuweatherService.getDecodedByteResponseFromGivenUrl(API_NAME, serviceUrl.concat("/").concat(locationKey).concat("?apikey=").concat(AppConfig.API_KEY).concat("&language=pl-PL&metric=true"));
         apiStatistics.incrementAccuweatherApiCallsCount();
         try {
             return mapper.readValue(responseBytes, ForecastDTO.class);

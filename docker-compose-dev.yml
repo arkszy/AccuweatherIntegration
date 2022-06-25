@@ -4,20 +4,19 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    restart: always
+    restart: "no"
     ports:
-      - 8090:8080
-      - 15005:5005
+      - "8090:8080"
+      - "15005:5005"
     depends_on:
       - server-mock
-    hostname: server
+    hostname: servers
   server-mock:
     build:
       context: ./server-mock
       dockerfile: Dockerfile
-    restart: always
+    restart: "no"
     ports:
-      - 8091:8080
-      - 15006:5005
+      - "8091:8080"
+      - "15006:5005"
     hostname: server-mock
-
